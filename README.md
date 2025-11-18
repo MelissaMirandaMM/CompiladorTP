@@ -8,14 +8,15 @@ Este projeto implementa um **analisador léxico completo** para a linguagem **La
 ##  Estrutura da pasta
 
 ```
-lang2-lexer/
+langLexer/
 ├── src/
 │ └── lexer/
 │ ├── Lang2Lexer.jflex 
 │ ├── Main.java 
 │ └── Token.java 
 ├── Makefile 
-└── exemplo.lang2 
+└── exemplo1.lang2 
+└── exemplo2.lang2
 ```
 
 ---

@@ -13,7 +13,7 @@ import java.util.HashSet;
 
 %%
 
-/* --- Seção 1: Configurações e Código de Usuário (Setup) --- */
+/* Etapa 1: Configurações e Código de Usuário (Setup) */
 
 // Definições Essenciais do JFlex
 %class Lang2Lexer
@@ -67,7 +67,7 @@ import java.util.HashSet;
 
 %}
 
-/* --- Seção 2: Definições de Macros (Padrões Léxicos Reutilizáveis) --- */
+/* Etapa 2: Definições de Macros (Padrões Léxicos Reutilizáveis)  */
 
 // Fim de Linha (End Of Line)
 EOL = \r|\n|\r\n
@@ -78,7 +78,6 @@ WHITESPACE_CHARS = [ \t\f]
 // Padrão completo de espaço em branco (a ser ignorado)
 WHITESPACE = {WHITESPACE_CHARS}+ | {EOL}
 
-/* --- Comentários --- */
 // Comentário Simples: Inicia com '--' e vai até o EOL
 LINE_COMMENT = "--" [^\r\n]*
 
@@ -94,7 +93,7 @@ CHAR_ESCAPE_SIMPLE = \\ [ntbr'\" \\]
 // Escapes Octais (três dígitos)
 CHAR_ESCAPE_OCTAL = \\ [0-9]{3}
 // Qualquer caractere que não precise de escape e não seja delimitador
-CHAR_REGULAR = [^ \\ ' \n \r]
+CHAR_REGULAR = [^ \\ ']
 // O corpo de um literal CHAR (um dos três tipos acima)
 CHAR_BODY = ( {CHAR_ESCAPE_SIMPLE} | {CHAR_ESCAPE_OCTAL} | {CHAR_REGULAR} )
 // O literal CHAR completo (delimitado por aspas simples)
@@ -134,6 +133,15 @@ TYID = [A-Z] [a-zA-Z0-9_]*
     "=="                  { return makeToken("=="); } // Igualdade
     "!="                  { return makeToken("!="); } // Diferença
     "&&"                  { return makeToken("&&"); } // AND Lógico
+    "->"                  { return makeToken("->"); } // Lexema: Operador de função / seta
+
+        /*
+     * 5. Literais
+     * (a precedencia do FLOAT vem antes do INT)
+     */
+    {FLOAT}               { return makeToken(yytext()); }
+    {INT}                 { return makeToken(yytext()); }
+    {CHAR}                { return makeToken(yytext()
     
     // Símbolos de um caractere
     "("                   { return makeToken("("); }
@@ -157,14 +165,6 @@ TYID = [A-Z] [a-zA-Z0-9_]*
     "!"                   { return makeToken("!"); } // NOT Lógico
     
     /*
-     * 5. Literais Numéricos e Caracteres
-     * FLOAT deve ser testado antes de INT para resolver a regra do maior prefixo
-     */
-    {FLOAT}               { return makeToken(yytext()); } // FLOAT
-    {INT}                 { return makeToken(yytext()); } // INT
-    {CHAR}                { return makeToken(yytext()); } // CHAR
-
-    /*
      * 6. Identificadores (ID de Variável e TYID de Tipo)
      * O token é criado. A identificação de Palavra-chave (Keyword) será feita
      * na classe Token ou no Parser, usando o Set estático.
@@ -184,8 +184,6 @@ TYID = [A-Z] [a-zA-Z0-9_]*
     \' \\ [^ntbr'\" \\ 0-9] [^\']* \' { throw new LexerException(yyline, yycolumn, "Sequência de escape inválida ('\\...') no char: " + yytext()); }
     // Char com octal incompleto (menos de 3 dígitos)
     \' \\ [0-9]{1,2} [^\'0-9] [^\']* \' { throw new LexerException(yyline, yycolumn, "Escape octal deve ser \\ddd (3 dígitos): " + yytext()); }
-    // Char não terminado (quebra de linha interrompe)
-    \' [^ \n \r]* {EOL}   { throw new LexerException(yyline, yycolumn, "Literal char não foi terminado antes da quebra de linha"); }
     // Char não terminado (apenas o delimitador de abertura)
     \'                    { throw new LexerException(yyline, yycolumn, "Literal char não está fechado"); }
 }
