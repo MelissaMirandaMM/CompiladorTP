@@ -212,6 +212,6 @@ TYID = [A-Z] [a-zA-Z0-9_]*
 /*
  * 8. Regra de Erro Léxico Genérico
  * Esta é a última regra no YYINITIAL, capturando tokens que não se encaixam
- * em nenhum dos padrões válidos definidos acima.
+ * em nenhum dos padrões válidos definidos acima. .
  */
 [^]                   { throw new LexerException(yyline, yycolumn, "Caractere não reconhecido/inválido: " + yytext()); }
