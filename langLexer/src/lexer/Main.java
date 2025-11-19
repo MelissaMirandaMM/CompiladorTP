@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         if (args.length != 2 || !args[0].equals("-lex")) {
-            System.err.println("Aplicaç: java -jar lexer.jar -lex <arquivo.lang2>");
+            System.err.println("Aplicação: java -jar lexer.jar -lex <file.lang2>");
             System.exit(1);
         }
 
@@ -30,7 +30,7 @@ public class Main {
             }
 
         } catch (IOException e) {
-            System.err.println("Erro de I/O ao ler o arquivo: " + filename);
+            System.err.println("Falha de entrada e/ou saída ao ler o arquivo: " + filename);
             System.err.println(e.getMessage());
             System.exit(2);
         
@@ -39,7 +39,7 @@ public class Main {
             System.exit(3);
         
         } catch (Exception e) {
-            System.err.println("Erro inesperado durante a análise:");
+            System.err.println("Falha não prevista ao efetuar a análise:");
             e.printStackTrace();
             System.exit(4);
 
@@ -48,7 +48,7 @@ public class Main {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    System.err.println("Erro ao fechar o arquivo: " + e.getMessage());
+                    System.err.println("Falha ao fechar o arquivo: " + e.getMessage());
                 }
             }
         }
