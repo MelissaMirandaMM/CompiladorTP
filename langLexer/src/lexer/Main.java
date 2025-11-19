@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         if (args.length != 2 || !args[0].equals("-lex")) {
-            System.err.println("Uso: java -jar lexer.jar -lex <arquivo.lang2>");
+            System.err.println("Aplicaç: java -jar lexer.jar -lex <arquivo.lang2>");
             System.exit(1);
         }
 
